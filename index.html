@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Preksha Didi</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-90px) rotate(20deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+      50% { transform: scale(1.5); box-shadow:despite the fact that 0 0 40px rgba(255, 255, 255, 1); }
+      100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+    }
+    @keyframes fireworkBlast {
+      0% { transform: scale(0) translate(0, 0); opacity: 1; }
+      100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
+    }
+    @keyframes confettiExplosion {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      100% { transform: scale(3) rotate(var(--rotate)) translate(var(--x), var(--y)); opacity: 0; }
+    }
+    @keyframes cardBlast {
+      0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+      60% { transform: scale(1.4) rotate(8deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes textReveal {
+      0% { opacity: 0; transform: translateY(80px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0) rotate(0deg); }
+      50% { opacity: 1; transform: scale(3) rotate(220deg); }
+      100% { opacity: 0; transform: scale(0) rotate(440deg); }
+    }
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1500px; }
+    }
+    .balloon {
+      animation: float 3.5s ease-in-out infinite;
+    }
+    .pulse-glow {
+      animation: pulseGlow 1.5s infinite;
+    }
+    .card-blast {
+      animation: cardBlast 1.8s ease-out forwards;
+    }
+    .firework-blast {
+      animation: fireworkBlast 3s ease-out forwards;
+    }
+    .confetti-explosion {
+      animation: confettiExplosion 3.5s ease-out forwards;
+    }
+    .text-reveal {
+      animation: textReveal 2s ease-out forwards;
+    }
+    .sparkle {
+      animation: sparkle 4s infinite;
+    }
+    .wave-bg {
+      animation: wave 12s linear infinite;
+    }
+    body {
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #ff6b6b 0%, #60a5fa 50%, #34d399 100%);
+    }
+    .parallax {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+    .card-bg {
+      background: linear-gradient(145deg, #fef3c7, #f9a8d4, #60a5fa);
+      border: 10px solid #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const Balloons = () => {
+      const balloons = Array.from({ length: 50 }, (_, i) => ({
+        id: i,
+        left: `${Math.random() * 95}%`,
+        delay: `${Math.random() * 9}s`,
+        color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffcc5c', '#f472b6', '#fef3c7', '#34d399', '#facc15', '#a78bfa'][Math.floor(Math.random() * 10)],
+        size: `${120 + Math.random() * 100}px`,
+      }));
+
+      return balloons.map(balloon => (
+        <div
+          key={balloon.id}
+          className="balloon absolute"
+          style={{
+            left: balloon.left,
+            animationDelay: balloon.delay,
+            bottom: '-400px',
+            zIndex: 5,
+          }}
+        >
+          <svg width={balloon.size} height={parseInt(balloon.size) * 1.9} viewBox="0 0 60 80">
+            <path
+              d="M30 0C15 0 0 15 0 30C0 45 30 70 30 70C30 70 60 45 60 30C60 15 45 0 30 0Z"
+              fill={balloon.color}
+            />
+            <path d="M30 70C30 70 30 75 30 80" stroke="#fff" strokeWidth="2" />
+          </svg>
+        </div>
+      ));
+    };
+
+    const Fireworks = ({ trigger }) => {
+      const [particles, setParticles] = useState([]);
+
+      useEffect(() => {
+        if (trigger > 0) {
+          const newParticles = Array.from({ length: 120 }, (_, i) => ({
+            id: i,
+            x: `${(Math.random() - 0.5) * 1800}px`,
+            y: `${(Math.random() - 0.5) * 1800}px`,
+            color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffcc5c', '#f472b6', '#fef3c7', '#34d399', '#facc15', '#a78bfa', '#fb923c'][Math.floor(Math.random() * 10)],
+            delay: `${Math.random() * 1.5}s`,
+          }));
+          setParticles(newParticles);
+          setTimeout(() => setParticles([]), 4000);
+        }
+      }, [trigger]);
+
+      return particles.map(particle => (
+        <div
+          key={particle.id}
+          className="absolute firework-blast"
+          style={{
+            left: '50%',
+            top: '50%',
+            width: '20px',
+            height: '20px',
+            backgroundColor: particle.color,
+            borderRadius: '50%',
+            animationDelay: particle.delay,
+            '--x': particle.x,
+            '--y': particle.y,
+            zIndex: 20,
+          }}
+        ></div>
+      ));
+    };
+
+    const Confetti = ({ trigger }) => {
+      const [pieces, setPieces] = useState([]);
+
+      useEffect(() => {
+        if (trigger > 0) {
+          const newPieces = Array.from({ length: 150 }, (_, i) => ({
+            id: i,
+            x: `${(Math.random() - 0.5) * 1200}px`,
+            y: `${(Math.random() - 0.5) * 1200}px`,
+            rotate: `${Math.random() * 1080}deg`,
+            color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffcc5c', '#f472b6', '#fef3c7', '#34d399', '#facc15', '#a78bfa', '#fb923c'][Math.floor(Math.random() * 10)],
+            delay: `${Math.random() * 2}s`,
+          }));
+          setPieces(newPieces);
+          setTimeout(() => setPieces([]), 4500);
+        }
+      }, [trigger]);
+
+      return pieces.map(piece => (
+        <div
+          key={piece.id}
+          className="absolute confetti-explosion"
+          style={{
+            left: '50%',
+            top: '50%',
+            width: '30px',
+            height: '30px',
+            backgroundColor: piece.color,
+            transformOrigin: 'center',
+            animationDelay: piece.delay,
+            '--x': piece.x,
+            '--y': piece.y,
+            '--rotate': piece.rotate,
+            zIndex: 15,
+          }}
+        ></div>
+      ));
+    };
+
+    const BirthdayCard = ({ isOpen, onClose, triggerEffects }) => {
+      useEffect(() => {
+        if (isOpen) {
+          const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+          audio.play().catch(err => console.log('Audio play failed:', err));
+          triggerEffects();
+          return () => audio.pause();
+        }
+      }, [isOpen, triggerEffects]);
+
+      if (!isOpen) return null;
+
+      return (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="card-bg rounded-3xl p-12 max-w-lg w-11/12 sm:w-4/5 md:w-3/4 lg:w-3/5 xl:w-1/2 shadow-2xl"
+               style={{ animation: isOpen ? 'card-blast 1.8s forwards' : '' }}>
+            <img
+              src="UklGRmo1BABXRUJQVlA4WAoAAAAgAAAAnwUABwcASUNDUMgBAAAAAAHIbGNtcwIQAABtbnRyUkdCIFhZWiAH4gADABQACQAOAB1hY3NwTVNGVAAAAABzYXdzY3RybAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWhhbmSdkQA9QICwPUB0LIGepSKOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAABxjcHJ0AAABDAAAAAx3dHB0AAABGAAAABRyWFlaAAABLAAAABRnWFlaAAABQAAAABRiWFlaAAABVAAAABRyVFJDAAABaAAAAGBnVFJDAAABaAAAAGBiVFJDAAABaAAAAGBkZXNjAAAAAAAAAAV1UkdCAAAAAAAAAAAAAAAAdGV4dAAAAABDQzAAWFlaIAAAAAAAAPNUAAEAAAABFslYWVogAAAAAAAAb6AAADjyAAADj1hZWiAAAAAAAABilgAAt4kAABjaWFlaIAAAAAAAACSgAAAPhQAAtsRjdXJ2AAAAAAAAACoAAAB8APgBnAJ1A4MEyQZOCBIKGAxiDvQRzxT2GGocLiBDJKwpai5"
+              alt="Birthday Person"
+              className="w-full h-80 sm:h-96 md:h-[400px] lg:h-[450px] object-cover rounded-2xl mb-8 border-10 border-white shadow-2xl"
+            />
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-600 tracking-wide">
+              Happy Birthday Dear Didi!
+            </h2>
+            <p className="text-center mt-6 text-gray-900 text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed drop-shadow-md">
+              Your day is a cosmic blast! Let’s light up the universe with epic vibes!
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-10 bg-gradient-to-r from-yellow-400 to-pink-600 text-white px-10 py-4 rounded-full w-full hover:from-yellow-500 hover:to-pink-700 transition transform hover:scale-105 pulse-glow shadow-lg text-lg sm:text-xl md:text-2xl"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    const ScrollSection = ({ isVisible }) => (
+      <div className={`py-48 px-6 max-w-7xl mx-auto text-center transition-opacity duration-2500 ${isVisible ? 'text-reveal' : 'opacity-0'}`}>
+        <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-600 mb-12 tracking-tight">
+          A Legendary Party
+        </h2>
+        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-relaxed mb-16 drop-shadow-lg">
+          I wish you many many returns of your day , may the creators of universe bless you with everything you need and make us proud , Happy Birthday once again at 7th of May 2025 I wish all the best for your future .
+        </p>
+        <div className="flex justify-center gap-12 flex-wrap">
+          {['🎂', '🎉', '🎁', '🎈', '✨', '🎇', '🌟', '🎊', '🎆', '🥳'].map((emoji, i) => (
+            <span
+              key={i}
+              className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl transform transition-transform duration-2000 text-reveal`}
+              style={{ animationDelay: `${i * 0.8}s` }}
+            >
+              {emoji}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+
+    const App = () => {
+      const [isCardOpen, setIsCardOpen] = useState(false);
+      const [isSectionVisible, setIsSectionVisible] = useState(false);
+      const [effectTrigger, setEffectTrigger] = useState(0);
+
+      useEffect(() => {
+        const handleScroll = () => {
+          if (window.scrollY > 900) {
+            setIsSectionVisible(true);
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const triggerEffects = () => {
+        setEffectTrigger(prev => prev + 1);
+      };
+
+      return (
+        <div className="min-h-screen relative overflow-hidden">
+          <div
+            className="absolute inset-0 parallax wave-bg"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1618005182380-3b6e89cd1b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80)',
+              backgroundColor: 'rgba(0,0,0,0.15)',
+            }}
+          ></div>
+          <Balloons />
+          <Fireworks trigger={effectTrigger} />
+          <Confetti trigger={effectTrigger} />
+          <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+            <h1 className="text-7xl sm:text-9xl md:text-11xl lg:text-12xl font-extrabold text-white drop-shadow-2xl pulse-glow tracking-wide text-center">
+              Happy Birthday!
+            </h1>
+            <button
+              onClick={() => {
+                setIsCardOpen(true);
+                triggerEffects();
+              }}
+              className="mt-16 bg-gradient-to-r from-yellow-400 to-pink-600 text-white px-14 py-8 rounded-full text-3xl sm:text-4xl md:text-5xl font-semibold hover:from-yellow-500 hover:to-pink-700 transition transform hover:scale-110 pulse-glow shadow-2xl"
+            >
+              Tap Me!
+            </button>
+          </div>
+
+          <BirthdayCard
+            isOpen={isCardOpen}
+            onClose={() => setIsCardOpen(false)}
+            triggerEffects={triggerEffects}
+          />
+
+          <ScrollSection isVisible={isSectionVisible} />
+
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {Array.from({ length: 100 }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute sparkle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 9}s`,
+                  zIndex: 2,
+                }}
+              >
+                <span className="text-5xl sm:text-6xl text-yellow-200">✨</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
